@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+
+springdoc:
+  pathsToMatch: /api/v1/bp**/**
+  packages-to-scan: com.example.bp
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+    docExpansion: none
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILE:dev}
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+  jmx:
+    enabled: false
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DBNAME:testDB}
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:admin}
+    driver-class-name: org.postgresql.Driver
+    maximum-pool-size: 30
+
+  rest-template:
+    timeout-seconds: 120
+  update-document-status-rest-template:
+    timeout-seconds: 15
+
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
+        show_sql: false
+        format_sql: true
+        jdbc:
+          time_zone: "UTC"
+          batch_size: 50
+          lob:
+            non_contextual_creation: true
+        default_batch_fetch_size: 50
+        order_inserts: true
+        order_updates: true
+        javax:
+          persistence:
+            query:
+              timeout: 10000
+
+        query:
+          in_clause_parameter_padding: true
+          fail_on_pagination_over_collection_fetch: true
+
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: ${CACHE_REGION_FACTORY:org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory}
+          use_structured_entries: true
+
+
+    open-in-view: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+#security:
+#  allowed-origins: "*"
+#
+#  token:
+#    secret-key: "4d89efb73eb876d09403a0f0"
+#    expiration-time-seconds: 36000
+#
+#scheduler:
+#  cron:
+#    outstanding-sync: 0 0 */6 ? * * # every 6 hours
+#
+#properties of email
+#mail_from:
+#mail_to:
+#mail_cc:
+#mail_server:
+#mail_server_port:
+#send_email:
+#mail.subject_success:
